@@ -42,8 +42,7 @@ specialCharacterTranslations = {
     "\x96\\dash": "-",
     "-\\hyphen": "-",
     "\"\\right-double-quote": "\"",
-    "\"\\left-double-quote": "\"",
-    " \\spock": " "
+    "\"\\left-double-quote": "\""
 }
 
 specialCharacterTranslationsRe = re.compile('|'.join(re.escape(key) for key in specialCharacterTranslations.keys()))
