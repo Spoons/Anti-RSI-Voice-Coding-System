@@ -3,16 +3,14 @@ import re
 from dragonfly import (
     Clipboard,
     Pause,
-    Key,
-    Text
 )
 
-#from lib.dynamic_aenea import (
-#    Key,
-#    Text,
-#)
+from lib.dynamic_aenea import (
+    Key,
+    Text,
+)
 
-#from lib.text import specialCharacterTranslations, specialCharacterTranslationsRe
+from lib.text import specialCharacterTranslations, specialCharacterTranslationsRe
 
 
 letterMap = {
