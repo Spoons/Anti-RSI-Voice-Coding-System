@@ -28,6 +28,7 @@ def directory_up(n):
 rules = MappingRule(
     mapping={
         # Commands and keywords:
+		"spec <text>": SCText("%(text)s"),
         "apt cache search": Text("apt-cache search "),
         "apt cache search <text>": SCText("apt-cache search %(text)s"),
         "apt cache show": Text("apt-cache show "),
