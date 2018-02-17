@@ -77,15 +77,15 @@ def cancel_and_sleep(text=None, text2=None):
     setMicState("sleeping")
 
 
-def reload_natlink():
-    """Reloads Natlink and custom Python modules."""
-    win = Window.get_foreground()
-    FocusWindow(executable="natspeak",
-        title="Messages from Python Macros").execute()
-    Pause("10").execute()
-    Key("a-f, r").execute()
-    Pause("10").execute()
-    win.set_foreground()
+#def reload_natlink():
+#    """Reloads Natlink and custom Python modules."""
+#    win = Window.get_foreground()
+#    FocusWindow(executable="natspeak",
+#        title="Messages from Python Macros").execute()
+#    Pause("10").execute()
+#    Key("a-f, r").execute()
+#    Pause("10").execute()
+#    win.set_foreground()
 
 
 # For repeating of characters.
@@ -468,9 +468,9 @@ grammarCfg.cmd.map = Item(
         "(delete|remove) (double|extra) (space|whitespace)": Key("c-left/3, backspace, c-right/3"),  # @IgnorePep8
         "(delete|remove) (double|extra) (type|char|character)": Key("c-left/3, del, c-right/3"),  # @IgnorePep8
         # Microphone sleep/cancel started dictation.
-        "[<text>] (go to sleep|cancel and sleep) [<text2>]": Function(cancel_and_sleep),  # @IgnorePep8
+        "[<text>] (go to sleep|cancel and sleep) [<text2>]": Function(cancel_and_sleep),
         # Reload Natlink.
-        "reload Natlink": Function(reload_natlink),
+        #"reload Natlink": Function(reload_natlink),
     },
     namespace={
         "Key": Key,
