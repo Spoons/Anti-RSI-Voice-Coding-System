@@ -2,3 +2,6 @@
 *.swp
 core/
 *.swo
+*.ipr
+*.iws
+*.iml
