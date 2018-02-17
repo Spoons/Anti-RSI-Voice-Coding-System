@@ -6,45 +6,70 @@ from dragonfly import (
     MappingRule,
     AppContext,
     IntegerRef,
+    RuleRef,
+    Alternative,
     Grammar,
+    Repetition,
+    CompoundRule,
+    Rule,
     Key,
 )
 
 letterMap = {
-    "(A|alpha)": "a",
-    "(B|bravo) ": "b",
-    "(C|charlie) ": "c",
-    "(D|delta) ": "d",
-    "(E|echo) ": "e",
-    "(F|foxtrot) ": "f",
-    "(G|golf) ": "g",
-    "(H|hotel) ": "h",
-    "(I|india|indigo) ": "i",
-    "(J|juliet) ": "j",
-    "(K|kilo) ": "k",
-    "(L|lima) ": "l",
-    "(M|mike) ": "m",
-    "(N|november) ": "n",
-    "(O|oscar) ": "o",
-    "(P|papa|poppa) ": "p",
-    "(Q|quebec|quiche) ": "q",
-    "(R|romeo) ": "r",
-    "(S|sierra) ": "s",
-    "(T|tango) ": "t",
-    "(U|uniform) ": "u",
-    "(V|victor) ": "v",
-    "(W|whiskey) ": "w",
-    "(X|x-ray) ": "x",
-    "(Y|yankee) ": "y",
-    "(Z|zulu) ": "z",
+    "(alpha)": Key("a"),
+    "(bravo) ": Key("b"),
+    "(charlie) ": Key("c"),
+    "(delta) ": Key("d"),
+    "(echo) ": Key("e"),
+    "(foxtrot) ": Key("f"),
+    "(golf) ": Key("g"),
+    "(hotel) ": Key("h"),
+    "(india|indigo) ": Key("i"),
+    "(juliet) ": Key("j"),
+    "(kilo) ": Key("k"),
+    "(lima) ": Key("l"),
+    "(mike) ": Key("m"),
+    "(november) ": Key("n"),
+    "(oscar) ": Key("o"),
+    "(papa|poppa) ": Key("p"),
+    "(quebec|quiche) ": Key("q"),
+    "(romeo) ": Key("r"),
+    "(sierra) ": Key("s"),
+    "(tango) ": Key("t"),
+    "(uniform) ": Key("u"),
+    "(victor) ": Key("v"),
+    "(whiskey) ": Key("w"),
+    "(x-ray) ": Key("x"),
+    "(yankee) ": Key("y"),
+    "(zulu) ": Key("z"),
 }
-
-rules = MappingRule (
+class LettersRule(MappingRule):
     mapping = letterMap
-)
+
+
+
+
+alternatives = []
+alternatives.append(RuleRef(rule=LettersRule()))
+
+single_action = Alternative(alternatives)
+
+new_sequence = Repetition(single_action, min=1, max=16, name="new_sequence")
+
+class LetterRepeter(CompoundRule):
+    spec = "spell <new_sequence>"
+    extras = [
+        new_sequence
+    ]
+
+    def _process_recognition(self, node, extras):
+        new_sequence = extras["new_sequence"]
+        for action in new_sequence:
+            action.execute()
+
 
 grammar = Grammar("letters")
-grammar.add_rule(rules)
+grammar.add_rule(LetterRepeter())
 grammar.load()
 
 
