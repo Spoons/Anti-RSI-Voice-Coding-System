@@ -35,10 +35,12 @@ def define_function(text):
 rules = MappingRule(
     mapping={
         # Keywords:
+        "is": Text("="),
         "and": Text(" && "),
         "assign": Text(" = "),
         "break": Text("break"),
         "case": Text("case "),
+        "const": Text("const "),
         "case <text>": SCText("case %(text)s"),
         "catch": Text("catch () {") + Key("left:3"),
         "comment": Text("// "),
@@ -78,6 +80,7 @@ rules = MappingRule(
         "modulo": Key("space") + Key("percent") + Key("space"),
         "new": Text("new "),
         "not equals": Text(" != "),
+        "null": Text("null"),
         "not (strict|strictly|exact|exactly) equals": Text(" !== "),
         "open comment": Text("/* "),
         "or": Text(" || "),
@@ -92,6 +95,7 @@ rules = MappingRule(
         "switch <text>": SCText("switch (%(text)s) {") + Key("left:3"),
         "this": Text("this"),
         "throw": Text("throw "),
+        "row": Text("row "),
         "true": Text("true"),
         "try": Text("try {") + Key("enter"),
         "typeof": Text("typeof "),
@@ -106,6 +110,7 @@ rules = MappingRule(
         "window": Text("window"),
         "undefined": Text("undefined"),
         "JSON": Text("JSON"),
+        "spet": Text(" "),
     },
     extras=[
         IntegerRef("n", 1, 100),
