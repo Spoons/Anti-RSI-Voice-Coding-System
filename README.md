@@ -1,10 +1,10 @@
-# VoiceCoder: Protect your Career and your Hands! 
-VoiceCoder is an open source and free set of macros for Dragonfly.  Ultimately,
-this system will allow one to code primarily with voice commands.
+# VoiceCoder
+
+An open source voice coding system written in Dragonfly.
 
 This software is and always will remain open source. RSI is a hugely overlooked
-issue in software development. I believe that this project will one day bring
-benefit to many people. Until then, I will continue to develop this software.
+issue in software development. I hope that this helps other developers who need
+a break from typing.
 
 # License
 
