@@ -3,7 +3,10 @@ from dragonfly import (
     MappingRule,
     Grammar,
     Dictation,
-    IntegerRef
+    IntegerRef,
+    RuleRef,
+    CompoundRule,
+    Repetition
 )
 
 from lib.dynamic_aenea import (
@@ -32,14 +35,33 @@ def define_function(text):
     Key("left:3").execute()
 
 
-rules = MappingRule(
+
+class SeriesMappingRule(CompoundRule):
+
+    def __init__(self, mapping, extras=None, defaults=None):
+        mapping_rule = MappingRule(mapping=mapping, extras=extras,
+                                   defaults=defaults, exported=False)
+        single = RuleRef(rule=mapping_rule)
+        series = Repetition(single, min=1, max=16, name="series")
+
+        compound_spec = "<series>"
+        compound_extras = [series]
+        CompoundRule.__init__(self, spec=compound_spec,
+                              extras=compound_extras, exported=True)
+
+    def _process_recognition(self, node, extras):  # @UnusedVariable
+        series = extras["series"]
+        for action in series:
+            action.execute()
+
+rules = SeriesMappingRule(
     mapping={
         # Keywords:
-        "is": Text("="),
         "and": Text(" && "),
         "assign": Text(" = "),
         "break": Text("break"),
-        "case": Text("case "),
+        #"case": Text("case "),
+        #"<text>": Function(lib.format.lowercase_text),
         "const": Text("const "),
         "case <text>": SCText("case %(text)s"),
         "catch": Text("catch () {") + Key("left:3"),
@@ -49,9 +71,9 @@ rules = MappingRule(
         "close comment": Text(" */"),
         "debugger": Text("debugger"),
         "default": Text("default"),
-#         "delete": Text("delete "),  # Messes with ordinary delete command.
         "do": Text("do {"),
-        "equals": Text(" == "),
+        "eqiv": Text(" == "),
+        "equals": Text("="),
         "equals (strict|strictly|exact|exactly)": Text(" === "),
         "else": Text("else"),
         "else if": Text("else if () {") + Key("left:3"),
@@ -95,7 +117,7 @@ rules = MappingRule(
         "switch <text>": SCText("switch (%(text)s) {") + Key("left:3"),
         "this": Text("this"),
         "throw": Text("throw "),
-        "row": Text("row "),
+        "row": Text("row"),
         "true": Text("true"),
         "try": Text("try {") + Key("enter"),
         "typeof": Text("typeof "),
@@ -110,7 +132,7 @@ rules = MappingRule(
         "window": Text("window"),
         "undefined": Text("undefined"),
         "JSON": Text("JSON"),
-        "spet": Text(" "),
+        "spat": Text(" "),
     },
     extras=[
         IntegerRef("n", 1, 100),
@@ -118,8 +140,9 @@ rules = MappingRule(
     ],
     defaults={
         "n": 1
-    }
+    },
 )
+
 
 grammar = Grammar("JavaScript grammar", context=GlobalDynamicContext())
 grammar.add_rule(rules)
