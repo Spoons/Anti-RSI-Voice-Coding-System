@@ -188,7 +188,7 @@ functionKeyMap = {
     'F eight': 'f8',
     'F nine': 'f9',
     'F ten': 'f10',
-    'F eleven': 'f11',
+    'F eleven': '11',
     'F twelve': 'f12',
 }
 
@@ -205,15 +205,11 @@ formatMap = {
     "snake": ft.snakeCase,
     "upper": ft.upperCase,
     "lower": ft.lowerCase,
+
     "squash": [ft.squash, ft.lowerCase],
-
-
-
     "dash": [ft.dashify, ft.lowerCase],
     "dash up": [ft.dashify, ft.upperCase],
-
     "dot": [ft.dotify, ft.lowerCase],
-
     "say": ft.spokenForm,
     "environment variable": [ft.snakeCase, ft.upperCase],
 }
@@ -363,27 +359,36 @@ def paste_command():
 
 grammarCfg = Config("multi edit")
 grammarCfg.cmd = Section("Language section")
+#key_action_map = {
 grammarCfg.cmd.map = Item(
     {
         # Navigation keys.
-        "up [<n>]": Key("up:%(n)d"),
-        "up [<n>] slow": Key("up/15:%(n)d"),
-        "down [<n>]": Key("down:%(n)d"),
-        "down [<n>] slow": Key("down/15:%(n)d"),
-        "left [<n>]": Key("left:%(n)d"),
-        "left [<n>] slow": Key("left/15:%(n)d"),
-        "right [<n>]": Key("right:%(n)d"),
-        "right [<n>] slow": Key("right/15:%(n)d"),
+        "up [<n>]": Key("up/5:%(n)d"),
+        "down [<n>]": Key("down/5:%(n)d"),
+        "left [<n>]": Key("left/5:%(n)d"),
+        "right [<n>]": Key("right/5:%(n)d"),
+
+        #By word navigation keys
+        "bam [<n>]": Key("c-right/5:%(n)d"), #move left n words
+        "pow [<n>]": Key("c-left/5:%(n)d"), #move right n words
+        
+        #Edit by word
+        "ket [<n>]": Key("c-backspace/5:%(n)d"), #delete right word
+        "snek [<n>]": Key("c-delete/5:%(n)d"), #delete left word
+
         "page up [<n>]": Key("pgup:%(n)d"),
         "page down [<n>]": Key("pgdown:%(n)d"),
         "up <n> (page|pages)": Key("pgup:%(n)d"),
         "down <n> (page|pages)": Key("pgdown:%(n)d"),
         "left <n> (word|words)": Key("c-left/3:%(n)d/10"),
         "right <n> (word|words)": Key("c-right/3:%(n)d/10"),
-        "home": Key("home"),
-        "end": Key("end"),
+
+        "west": Key("home"),
+        "east": Key("end"),
+
         "doc home": Key("c-home/3"),
         "doc end": Key("c-end/3"),
+
         # Functional keys.
         "space": release + Key("space"),
         "space [<n>]": release + Key("space:%(n)d"),
@@ -467,9 +472,16 @@ grammarCfg.cmd.map = Item(
     }
 )
 
+character_action_map = {
+    "plain <chars>": Text("%(chars)s"),
+    "numbers <numerals>": Text("%(numerals)s"),
+    "print <letters>": Text("%(letters)s"),
+    #"shout <letters>": Function(lambda letters: Text(letters.upper()).execute()),
+}
 
 if config.get("aenea.enabled") == True:
     # Keypresses, to get that working better in Linux.
+    #combination_key_map = {
     grammarCfg.cmd.map.update({
         "press <modifierSingle>": Key("%(modifierSingle)s"),
         "press <modifier1> <pressKey> [<n>]": Key("%(modifier1)s-%(pressKey)s:%(n)d"),  # @IgnorePep8
@@ -480,6 +492,7 @@ if config.get("aenea.enabled") == True:
 class KeystrokeRule(MappingRule):
     exported = False
     mapping = grammarCfg.cmd.map
+    #mapping = key_action_map
     extras = [
         IntegerRef("n", 1, 100),
         Dictation("text"),

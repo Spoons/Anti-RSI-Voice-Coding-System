@@ -147,7 +147,8 @@ def dynamic_disable():
 def is_enabled():
     global grammar
     if grammar.enabled:
-        return True else:
+        return True 
+    else:
         return False
 
 
