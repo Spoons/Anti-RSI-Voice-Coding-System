@@ -209,30 +209,18 @@ pressKeyMap.update(functionKeyMap)
 
 
 formatMap = {
-    "camel case": ft.camelCase,
-    "pascal case": ft.pascalCase,
-    "snake case": ft.snakeCase,
-    "uppercase": ft.upperCase,
-    "lowercase": ft.lowerCase,
-    "squash": ft.squash,
+    "camel": ft.camelCase,
+    "pascal": ft.pascalCase,
+    "snake": ft.snakeCase,
+    "upper": ft.upperCase,
+    "lower": ft.lowerCase,
+    "squash": [ft.squash, ft.lowerCase],
 
-    "lowercase squash": [ft.squash, ft.lowerCase],
-    "uppercase squash": [ft.squash, ft.upperCase],
-    "squash lowercase": [ft.squash, ft.lowerCase],
-    "squash uppercase": [ft.squash, ft.upperCase],
 
-    "dashify": [ft.dashify, ft.lowerCase],
-    "dashify lowercase": [ft.dashify, ft.lowerCase],
-    "dashify uppercase": [ft.dashify, ft.upperCase],
-    "lowercase dashify ": [ft.dashify, ft.lowerCase],
-    "uppercase dashify ": [ft.dashify, ft.upperCase],
+    "dash": [ft.dashify, ft.lowerCase],
+    "dash up": [ft.dashify, ft.upperCase],
 
     "dotify": [ft.dotify, ft.lowerCase],
-    "upper dotify": [ft.dotify, ft.upperCase],
-    "dotify lowercase": [ft.dotify, ft.lowerCase],
-    "dotify uppercase": [ft.dotify, ft.upperCase],
-    "dotify camel case": [ft.dotify, ft.camelCase],
-    "dotify pascal case": [ft.dotify, ft.pascalCase],
 
     "say": ft.spokenForm,
     "environment variable": [ft.snakeCase, ft.upperCase],
