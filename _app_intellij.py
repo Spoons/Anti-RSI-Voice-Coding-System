@@ -28,7 +28,8 @@ mapping = {
     # Code navigation.
     "navigate to class <text>": Key("c-n") + Pause("30") + Function(lib.format.pascal_case_text) + Pause("30") + Key("enter"),
     "navigate to class chooser <text>": Key("c-n") + Pause("30") + Function(lib.format.pascal_case_text) + Pause("30"),
-    "navigate to file <text>": Key("cs-n") + Pause("30") + Function(lib.format.camel_case_text) + Pause("30") + Key("enter"),
+    "navigate to file": Key("c-comma"),
+    "navigate to file <text>": Key("c-comma") + Pause("30") + Function(lib.format.camel_case_text) + Pause("30"),# + Key("enter"),
     "navigate to file chooser <text>": Key("cs-n") + Pause("30") + Function(lib.format.camel_case_text) + Pause("30"),
     "navigate to symbol <text>": Key("cas-n") + Pause("30") + Function(lib.format.camel_case_text) + Pause("30") + Key("enter"),
     "navigate to symbol chooser <text>": Key("cas-n") + Pause("30") + Function(lib.format.camel_case_text) + Pause("30"),
@@ -39,9 +40,10 @@ mapping = {
     "go back": DynamicAction(Key("ca-left"), Key("as-left")),
 
     # Project settings.
-    "go to project window": Key("a-1"),
-    "go to module settings": Key("f4"),
-    "go to [project] settings": Key("ca-s"),
+    "open project window": Key("a-1"),
+    "open module settings": Key("f4"),
+    "open project settings": Key("ca-s"),
+    "open settings": Key("ca-s"),
     "synchronize files": Key("ca-y"),
 
     # Terminal.

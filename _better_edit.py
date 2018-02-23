@@ -77,15 +77,6 @@ def cancel_and_sleep(text=None, text2=None):
     setMicState("sleeping")
 
 
-#def reload_natlink():
-#    """Reloads Natlink and custom Python modules."""
-#    win = Window.get_foreground()
-#    FocusWindow(executable="natspeak",
-#        title="Messages from Python Macros").execute()
-#    Pause("10").execute()
-#    Key("a-f, r").execute()
-#    Pause("10").execute()
-#    win.set_foreground()
 
 
 # For repeating of characters.
@@ -217,10 +208,11 @@ formatMap = {
     "squash": [ft.squash, ft.lowerCase],
 
 
+
     "dash": [ft.dashify, ft.lowerCase],
     "dash up": [ft.dashify, ft.upperCase],
 
-    "dotify": [ft.dotify, ft.lowerCase],
+    "dot": [ft.dotify, ft.lowerCase],
 
     "say": ft.spokenForm,
     "environment variable": [ft.snakeCase, ft.upperCase],
@@ -424,27 +416,30 @@ grammarCfg.cmd.map = Item(
         "parens": Key("lparen, rparen, left/3"),
         "quotes": Key("dquote/3, dquote/3, left/3"),
         "single quotes": Key("squote, squote, left/3"),
-        # Shorthand multiple characters.
-        "double <char>": Text("%(char)s%(char)s"),
-        "triple <char>": Text("%(char)s%(char)s%(char)s"),
-        "double escape": Key("escape, escape"),  # Exiting menus.
+
+
         # Punctuation and separation characters, for quick editing.
         "colon [<n>]": Key("colon/2:%(n)d"),
         "semi-colon [<n>]": Key("semicolon/2:%(n)d"),
         "comma [<n>]": Key("comma/2:%(n)d"),
         "(dot|period) [<n>]": Key("dot/2:%(n)d"),
         "(dash|hyphen|minus) [<n>]": Key("hyphen/2:%(n)d"),
-        "underscore [<n>]": Key("underscore/2:%(n)d"),
+
+
         # To release keyboard capture by VirtualBox.
         "press right control": Key("Control_R"),
+
+
         # Formatting <n> words to the left of the cursor.
-        "camel case <n> [words]": Function(camel_case_count),
-        "pascal case <n> [words]": Function(pascal_case_count),
-        "snake case <n> [words]": Function(snake_case_count),
+        "underscore [<n>]": Key("underscore/2:%(n)d"),
+        "camel <n> [words]": Function(camel_case_count),
+        "pascal <n> [words]": Function(pascal_case_count),
+        "snake <n> [words]": Function(snake_case_count),
         "squash <n> [words]": Function(squash_count),
         "expand <n> [words]": Function(expand_count),
         "uppercase <n> [words]": Function(uppercase_count),
         "lowercase <n> [words]": Function(lowercase_count),
+
         # Format dictated words. See the formatMap for all available types.
         # Ex: "camel case my new variable" -> "myNewVariable"
         # Ex: "snake case my new variable" -> "my_new_variable"
@@ -452,18 +447,19 @@ grammarCfg.cmd.map = Item(
         "<formatType> <text>": Function(format_text),
         # For writing words that would otherwise be characters or commands.
         # Ex: "period", tab", "left", "right", "home".
+
+        # Awkward fix this rater
         "say <reservedWord>": Text("%(reservedWord)s"),
         # Abbreviate words commonly used in programming.
         # Ex: arguments -> args, parameters -> params.
         "abbreviate <abbreviation>": Text("%(abbreviation)s"),
+
         # Text corrections.
         "(add|fix) missing space": Key("c-left/3, space, c-right/3"),
         "(delete|remove) (double|extra) (space|whitespace)": Key("c-left/3, backspace, c-right/3"),  # @IgnorePep8
         "(delete|remove) (double|extra) (type|char|character)": Key("c-left/3, del, c-right/3"),  # @IgnorePep8
         # Microphone sleep/cancel started dictation.
         "[<text>] (go to sleep|cancel and sleep) [<text2>]": Function(cancel_and_sleep),
-        # Reload Natlink.
-        #"reload Natlink": Function(reload_natlink),
     },
     namespace={
         "Key": Key,
