@@ -1,6 +1,6 @@
 {
     "aenea.enabled": false, 
     "aenea.path": null, 
-    "dynamics.bash": false, 
-    "dynamics.javascript": true
+    "dynamics.bash": true, 
+    "dynamics.javascript": false
 }
