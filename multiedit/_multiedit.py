@@ -88,9 +88,6 @@ release = Key("shift:up, ctrl:up")
 config            = Config("multi edit")
 config.cmd        = Section("Language section")
 config.cmd.map    = Item(
-    # Here we define the *default* command map.  If you would like to
-    #  modify it to your personal taste, please *do not* make changes
-    #  here.  Instead change the *config file* called "_multiedit.txt".
     {
      # Spoken-form    ->    ->    ->     Action object
      "up [<n>]":                         Key("up/5:%(n)d"),
@@ -118,7 +115,7 @@ config.cmd.map    = Item(
 
      "crack [<n>]":                      release + Key("del:%(n)d"),
      "delete [<n> | this] (line|lines)": release + Key("home, s-down/5:%(n)d, del"),
-     "snap [<n>]":                  release + Key("backspace/5:%(n)d"),
+     "snap [<n>]":                       release + Key("backspace/5:%(n)d"),
      "pop up":                           release + Key("apps"),
 
      "paste":                            release + Key("c-v"),
