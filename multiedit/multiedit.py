@@ -10,8 +10,7 @@ except ImportError:
     pass
 
 from dragonfly import *
-import character_maps
-from action_maps import action_maps
+from maps import maps
 
 
 config = Config("multi edit")
@@ -27,8 +26,8 @@ namespace = config.load()
 format_functions = {}
 if namespace:
     for name, function in namespace.items():
-     if name.startswith("format_") and callable(function):
-        spoken_form = function.__doc__.strip()
+        if name.startswith("format_") and callable(function):
+            spoken_form = function.__doc__.strip()
 
         # We wrap generation of the Function action in a function so
         #  that its *function* variable will be local.  Otherwise it
@@ -60,15 +59,15 @@ class KeystrokeRule(MappingRule):
 
     exported = False
 
-    mapping  = action_maps._map
+    mapping  = maps.key_action_map
     extras   = [
-                IntegerRef("n", 1, 100),
-                Dictation("text"),
-                Dictation("text2"),
-               ]
+            IntegerRef("n", 1, 100),
+            Dictation("text"),
+            Dictation("text2"),
+            ]
     defaults = {
-                "n": 1,
-               }
+            "n": 1,
+            }
 
 
 
@@ -76,22 +75,34 @@ alternatives = []
 alternatives.append(RuleRef(rule=KeystrokeRule()))
 if FormatRule:
     alternatives.append(RuleRef(rule=FormatRule()))
-single_action = Alternative(alternatives)
+ksr = Alternative(alternatives)
 
-sequence = Repetition(single_action, min=1, max=16, name="sequence")
 
+#class CharacterRule(MappingRule):
+#    name = "CharacterRule"
+#    mapping = {
+#            "plain <chars>": Text("%(chars)s"),
+#            "numbers <numerals>": Text("%(numerals)s"),
+#            "print <letters>": Text("%(letters)s"),
+#            "shout <letters>": Function(lambda letters: Text(letters.upper()).execute()),
+#            }
+#    extras = [
+#            "numerals": numbers_element,
+#            "letters": letters_element,
+#            "chars": chars_element
+#            ]
 
 class RepeatRule(CompoundRule):
 
-    # Here we define this rule's spoken-form and special elements.
+        # Here we define this rule's spoken-form and special elements.
     spec     = "<sequence> [[[and] repeat [that]] <n> times]"
     extras   = [
-                sequence,                 # Sequence of actions defined above.
-                IntegerRef("n", 1, 100),  # Times to repeat the sequence.
-               ]
+            Repetition(ksr, min=1, max=5, name="sequence"),
+            IntegerRef("n", 1, 100),  # Times to repeat the sequence.
+            ]
     defaults = {
-                "n": 1,                   # Default repeat count.
-               }
+            "n": 1,                   # Default repeat count.
+            }
 
     def _process_recognition(self, node, extras):
         sequence = extras["sequence"]   # A sequence of actions.
@@ -99,7 +110,7 @@ class RepeatRule(CompoundRule):
         for i in range(count):
             for action in sequence:
                 action.execute()
-        action_maps.release.execute()
+        maps.release.execute()
 
 
 #---------------------------------------------------------------------------
