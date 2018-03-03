@@ -9,5 +9,6 @@ modules = { "multiedit": "multiedit"}
 
 for key, value in modules.iteritems():
     print("Loading %s " % key)
-    importlib.import_module(key+'.'+value)
 
+
+import multiedit.multiedit
