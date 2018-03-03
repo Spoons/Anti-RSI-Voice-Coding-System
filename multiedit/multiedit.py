@@ -1,5 +1,4 @@
-﻿#
-# This file is a command-module for Dragonfly.
+﻿# This file is a command-module for Dragonfly.
 # (c) Copyright 2008 by Christo Butcher
 # Licensed under the LGPL, see <http://www.gnu.org/licenses/>
 #
@@ -70,75 +69,14 @@ except ImportError:
     pass
 
 from dragonfly import *
+import character_maps
+from action_maps import action_maps
 
 
-#---------------------------------------------------------------------------
-# Here we globally defined the release action which releases all
-#  modifier-keys used within this grammar.  It is defined here
-#  because this functionality is used in many different places.
-#  Note that it is harmless to release ("...:up") a key multiple
-#  times or when that key is not held down at all.
-
-release = Key("shift:up, ctrl:up")
-
-
-#---------------------------------------------------------------------------
-# Set up this module's configuration.
-
-config            = Config("multi edit")
-config.cmd        = Section("Language section")
-config.cmd.map    = Item(
-    {
-     # Spoken-form    ->    ->    ->     Action object
-     "up [<n>]":                         Key("up/5:%(n)d"),
-     "down [<n>]":                       Key("down/5:%(n)d"),
-     "left [<n>]":                       Key("left/5:%(n)d"),
-     "right [<n>]":                      Key("right/5:%(n)d"),
-     "page up [<n>]":                    Key("pgup/5:%(n)d"),
-     "page down [<n>]":                  Key("pgdown/5:%(n)d"),
-     "up <n> (page | pages)":            Key("pgup/5:%(n)d"),
-     "down <n> (page | pages)":          Key("pgdown/5:%(n)d"),
-     "left <n> (word | words)":          Key("c-left/5:%(n)d"),
-     "right <n> (word | words)":         Key("c-right/5:%(n)d"),
-     "left word":                        Key("c-left/5"),
-     "right word":                       Key("c-right/5"),
-     "top":                              Key("home"),
-     "pown":                             Key("end"),
-     "doc home":                         Key("c-home"),
-     "doc end":                          Key("c-end"),
-
-     "space [<n>]":                      release + Key("space:%(n)d"),
-     "enter [<n>]":                      release + Key("enter:%(n)d"),
-     "tab [<n>]":                        Key("tab:%(n)d"),
-     "cancel|escape":                    release + Key("escape"),
-     #"edit text": utils.RunApp("notepad"),
-
-     "crack [<n>]":                      release + Key("del:%(n)d"),
-     "delete [<n> | this] (line|lines)": release + Key("home, s-down/5:%(n)d, del"),
-     "snap [<n>]":                       release + Key("backspace/5:%(n)d"),
-     "pop up":                           release + Key("apps"),
-
-     "paste":                            release + Key("c-v"),
-     "duplicate <n>":                    release + Key("c-c, c-v:%(n)d"),
-     "copy":                             release + Key("c-c"),
-     "cut":                              release + Key("c-x"),
-     "select all":                       release + Key("c-a"),
-
-     "[hold] shift":                     Key("shift:down"),
-     "release shift":                    Key("shift:up"),
-     "[hold] control":                   Key("ctrl:down"),
-     "release control":                  Key("ctrl:up"),
-     "release [all]":                    release,
-
-     "say <text>":                       release + Text("%(text)s"),
-     "mimic <text>":                     release + Mimic(extra="text"),
-    },
-    namespace={
-     "Key":   Key,
-     "Text":  Text,
-    }
-)
+config = Config("multi edit")
+config.cmd = Section("Language section")
 namespace = config.load()
+
 
 #---------------------------------------------------------------------------
 # Here we prepare the list of formatting functions from the config file.
@@ -190,13 +128,14 @@ else:
 # Note that this rule does not execute these actions, it
 #  simply returns them when it's value() method is called.
 #  For example "up 4" will give the value Key("up:4").
-# More information about Key() actions can be found here:
+#  More information about Key() actions can be found here:
 #  http://dragonfly.googlecode.com/svn/trunk/dragonfly/documentation/actionkey.html
+print("The real multiedit")
 class KeystrokeRule(MappingRule):
 
     exported = False
 
-    mapping  = config.cmd.map
+    mapping  = action_maps._map
     extras   = [
                 IntegerRef("n", 1, 100),
                 Dictation("text"),
@@ -268,7 +207,7 @@ class RepeatRule(CompoundRule):
         for i in range(count):
             for action in sequence:
                 action.execute()
-        release.execute()
+        action_maps.release.execute()
 
 
 #---------------------------------------------------------------------------

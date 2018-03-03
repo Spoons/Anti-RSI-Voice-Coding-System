@@ -9,7 +9,7 @@
 #  See below for various examples.
 
 import re
-import _text_utils as text
+import multiedit._text_utils as text
 
 # Format: some_words
 def format_score(dictation):          # Function name must start with "format_".
